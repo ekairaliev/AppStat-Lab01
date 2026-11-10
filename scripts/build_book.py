@@ -184,15 +184,25 @@ def prepare():
                 "source": sprint_overviews[page].splitlines(keepends=True),
             })
         if page == "intro":
+            # Keep notebook cell anchors while using the cover as the website title page.
+            output_cells = [
+                cell for cell in output_cells
+                if text(cell).startswith("(cell-")
+            ]
             output_cells.append({
                 "cell_type": "markdown", "metadata": {},
                 "source": [
-                    "\n## Исследование\n\n",
-                    "Температура воспламенения, задержка воспламенения и скорость горения металлических материалов.\n\n",
-                    "Первый спринт посвящён анализу экспериментальных данных, второй - построению и проверке шести генераторов случайных чисел.\n\n",
-                    "[Начать с первого спринта](sprint1/index.ipynb) · [Генераторы второго спринта](sprint2/index.ipynb)\n\n",
-                    "[Открыть полный ноутбук в Colab](https://colab.research.google.com/github/ekairaliev/AppStat-Lab01/blob/main/AppStat_Lab01.ipynb) · ",
-                    "[Исходный ноутбук на GitHub](https://github.com/ekairaliev/AppStat-Lab01/blob/main/AppStat_Lab01.ipynb)\n",
+                    "# Прикладная статистика\n\n",
+                    "```{image} _static/cover.jpg\n",
+                    ":alt: Прикладная статистика. Обложка с горящим металлом и кривыми распределений. Авторы: Эмиль Кайралиев и Кристина Торхова.\n",
+                    ":class: book-cover\n",
+                    ":align: center\n",
+                    "```\n\n",
+                    "Исследование температуры воспламенения, задержки воспламенения и скорости горения металлических материалов.\n\n",
+                    "Первый спринт посвящён анализу экспериментальных данных, второй — построению и проверке шести генераторов случайных величин.\n\n",
+                    "## Оглавление\n\n",
+                    "```{tableofcontents}\n",
+                    "```\n",
                 ],
             })
         target = BOOK / (page + ".ipynb")
