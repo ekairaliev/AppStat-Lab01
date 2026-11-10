@@ -91,6 +91,40 @@ def prepare():
     BOOK.mkdir(exist_ok=True)
     shutil.copyfile(ROOT / "docs/_config.yml", BOOK / "_config.yml")
     shutil.copytree(ROOT / "docs/_static", BOOK / "_static", dirs_exist_ok=True)
+    shutil.copytree(ROOT / "docs/_templates", BOOK / "_templates", dirs_exist_ok=True)
+
+    sprint_overviews = {
+        "sprint1/index": """## Анализ экспериментальных данных
+
+В первом спринте исследуем три свойства горения металлических материалов.
+Для каждой величины описываем выборку, строим распределения, рассчитываем
+числовые характеристики и сравниваем данные с теоретическими моделями.
+
+## Разделы спринта
+
+- [Температура воспламенения](temperature.ipynb) — анализ температур воспламенения магниевых материалов.
+- [Задержка воспламенения](delay.ipynb) — исследование времени до начала воспламенения.
+- [Линейная скорость горения](speed.ipynb) — анализ скоростей горения сплавов Ti-Cu.
+- [Итоги первого спринта](resume.ipynb) — общие выводы и таблица самооценки.
+""",
+        "sprint2/index": """## Генераторы случайных величин
+
+Во втором спринте реализуем по два генератора для каждой из трёх величин.
+Для каждого алгоритма приводим математическое обоснование, код и проверки.
+Сравниваем статистики и интегральные функции распределения сгенерированных
+выборок с исходными данными и выбранными моделями.
+
+## Разделы спринта
+
+- [Задержка: обратная ИФР](random01.ipynb).
+- [Задержка: Бокс-Мюллер](random02.ipynb).
+- [Температура: метод Неймана](random03.ipynb).
+- [Температура: суперпозиция](random04.ipynb).
+- [Скорость: метод отношений](random05.ipynb).
+- [Скорость: суперпозиция](random06.ipynb).
+- [Итоги второго спринта](resume.ipynb) — сравнение шести генераторов и таблица самооценки.
+""",
+    }
 
     for page, title, start, end in pages:
         output_cells = []
@@ -144,6 +178,11 @@ def prepare():
 
         if not added_title:
             output_cells.insert(0, {"cell_type": "markdown", "metadata": {}, "source": [f"# {title}\n"]})
+        if page in sprint_overviews:
+            output_cells.append({
+                "cell_type": "markdown", "metadata": {},
+                "source": sprint_overviews[page].splitlines(keepends=True),
+            })
         if page == "intro":
             output_cells.append({
                 "cell_type": "markdown", "metadata": {},

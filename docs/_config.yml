@@ -1,6 +1,5 @@
 title: Прикладная статистика
-author: Эмиль Кайралиев
-copyright: "2026"
+author: Эмиль Кайралиев, Торхова Кристина
 only_build_toc_files: true
 
 execute:
@@ -26,8 +25,12 @@ parse:
     - deflist
 
 sphinx:
+  recursive_update: true
   config:
     language: ru
+    html_show_copyright: false
+    templates_path:
+      - _templates
     html_title: Прикладная статистика
     html_css_files:
       - custom.css
