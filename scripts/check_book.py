@@ -54,4 +54,11 @@ assert checked_links > 0, "Category navigation was not rendered"
 assert len(referenced_figures) == expected_figures, (len(referenced_figures), expected_figures)
 assert (HTML / "search.html").is_file()
 assert (HTML / "searchindex.js").is_file()
+references_path = (HTML / "references.html").resolve()
+qr_name = "literature-qr-41e213d3.png"
+qr_sources = [src for src in pages[references_path].images if urlsplit(src).path.endswith("/" + qr_name)]
+assert len(qr_sources) == 1, "The current literature QR must appear exactly once"
+rendered_qr = references_path.parent / unquote(urlsplit(qr_sources[0]).path)
+assert rendered_qr.read_bytes() == (ROOT / "docs/_static" / qr_name).read_bytes(), "Outdated literature QR"
+assert "https://disk.yandex.ru/d/gn0ul4mhawWwsw" in pages[references_path].links
 print(f"Verified {checked_links} rendered cell links, {len(referenced_figures)} figures and search assets.")
