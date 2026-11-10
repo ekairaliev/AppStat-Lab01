@@ -5,7 +5,6 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
-import posixpath
 import re
 import shutil
 from pathlib import Path
@@ -102,7 +101,7 @@ def prepare():
             if ident:
                 output_cells.append({
                     "cell_type": "markdown", "metadata": {},
-                    "source": [f'<a class="cell-anchor" id="cell-{ident}"></a>\n'],
+                    "source": [f"(cell-{ident})=\n"],
                 })
             if cell["cell_type"] == "markdown":
                 source = text(cell)
@@ -120,9 +119,7 @@ def prepare():
                     target = match.group(1)
                     if target not in cell_pages:
                         raise ValueError(f"Broken Colab link: {target}")
-                    target_page = cell_pages[target]
-                    relative = posixpath.relpath(target_page + ".html", posixpath.dirname(page) or ".")
-                    return ("" if target_page == page else relative) + f"#cell-{target}"
+                    return f"#cell-{target}"
 
                 source = re.sub(r"#scrollTo=([\w-]+)", rewrite_link, source)
                 cell["source"] = source.splitlines(keepends=True)
@@ -132,6 +129,17 @@ def prepare():
                     tags.append("hide-input")
                 # Widgets' transient state is not required to render saved figures.
                 cell.get("metadata", {}).pop("execution", None)
+                cleaned_outputs = []
+                for output in cell.get("outputs", []):
+                    data = output.get("data")
+                    if data is not None:
+                        for mime in list(data):
+                            if mime.startswith("application/vnd.google.colaboratory."):
+                                del data[mime]
+                        if not data:
+                            continue
+                    cleaned_outputs.append(output)
+                cell["outputs"] = cleaned_outputs
             output_cells.append(cell)
 
         if not added_title:
@@ -143,7 +151,7 @@ def prepare():
                     "\n## Исследование\n\n",
                     "Температура воспламенения, задержка воспламенения и скорость горения металлических материалов.\n\n",
                     "Первый спринт посвящён анализу экспериментальных данных, второй - построению и проверке шести генераторов случайных чисел.\n\n",
-                    "[Начать с первого спринта](sprint1/index.html) · [Генераторы второго спринта](sprint2/index.html)\n\n",
+                    "[Начать с первого спринта](sprint1/index.ipynb) · [Генераторы второго спринта](sprint2/index.ipynb)\n\n",
                     "[Открыть полный ноутбук в Colab](https://colab.research.google.com/github/ekairaliev/AppStat-Lab01/blob/main/AppStat_Lab01.ipynb) · ",
                     "[Исходный ноутбук на GitHub](https://github.com/ekairaliev/AppStat-Lab01/blob/main/AppStat_Lab01.ipynb)\n",
                 ],
