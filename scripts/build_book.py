@@ -209,7 +209,7 @@ def prepare():
             output_cells.append({
                 "cell_type": "markdown", "metadata": {},
                 "source": [
-                    "\nДля удобства собрали pdf литературы:\n\n",
+                    "\nДля удобства собрали [pdf](https://disk.yandex.ru/d/gn0ul4mhawWwsw) литературы:\n\n",
                     "```{image} _static/literature-qr.png\n",
                     ":alt: QR-код для доступа к PDF литературы\n",
                     ":width: 220px\n",
