@@ -45,7 +45,8 @@ for origin, page in pages.items():
             continue
         image = (origin.parent / unquote(url.path)).resolve()
         assert image.is_file(), f"Missing figure: {origin} -> {src}"
-        referenced_figures.add(image)
+        if not (ROOT / "docs/_static" / image.name).is_file():
+            referenced_figures.add(image)
 
 source = json.loads((ROOT / "AppStat_Lab01.ipynb").read_text(encoding="utf-8"))
 expected_figures = sum("image/png" in output.get("data", {}) for cell in source["cells"] for output in cell.get("outputs", []))

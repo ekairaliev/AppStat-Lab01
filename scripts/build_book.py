@@ -205,6 +205,18 @@ def prepare():
                     "```\n",
                 ],
             })
+        if page == "references":
+            output_cells.append({
+                "cell_type": "markdown", "metadata": {},
+                "source": [
+                    "\nДля удобства собрали pdf литературы:\n\n",
+                    "```{image} _static/literature-qr.png\n",
+                    ":alt: QR-код для доступа к PDF литературы\n",
+                    ":width: 220px\n",
+                    ":align: left\n",
+                    "```\n",
+                ],
+            })
         target = BOOK / (page + ".ipynb")
         target.parent.mkdir(parents=True, exist_ok=True)
         metadata = {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"}}
