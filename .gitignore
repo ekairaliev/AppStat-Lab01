@@ -1,0 +1,5 @@
+# Generated website and local Python environment
+/book/
+/.venv/
+__pycache__/
+*.pyc
