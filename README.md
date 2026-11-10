@@ -32,6 +32,7 @@
 python -m pip install -r requirements-book.txt
 python scripts/build_book.py
 jupyter-book build book --warningiserror --keep-going
+python scripts/check_book.py
 ```
 
 Готовые страницы находятся в `book/_build/html`. Для просмотра с поиском и корректными относительными ссылками:
