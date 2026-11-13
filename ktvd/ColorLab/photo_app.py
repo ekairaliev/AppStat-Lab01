@@ -1,3 +1,9 @@
+# /// script
+# dependencies = [
+#   "numpy", "pandas", "matplotlib", "scipy", "plotly", "pillow"
+# ]
+# ///
+
 import marimo
 
 __generated_with = "0.18.0"
@@ -5,7 +11,7 @@ app = marimo.App(width="full", css_file="colorlab.css")
 
 
 @app.cell
-def _():
+async def _():
     import base64
     import io
     import zipfile
@@ -20,7 +26,32 @@ def _():
     import plotly.graph_objects as go
     from PIL import Image
 
-    root = Path(__file__).resolve().parent
+    import sys
+
+    if sys.platform == "emscripten":
+        from pyodide.http import pyfetch
+
+        base_url = str(mo.notebook_location()).rstrip("/") + "/public"
+        root = Path("/tmp/colorlab_runtime")
+        for relative_name in (
+            "data/photo_color_data.csv",
+            "data/cifar10_photos.zip",
+            "assets/texture.jpg",
+            "assets/wing.svg",
+            "assets/flower.svg",
+            "assets/divider.svg",
+        ):
+            destination = root / relative_name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            response = await pyfetch(f"{base_url}/{relative_name}")
+            if not response.ok:
+                raise FileNotFoundError(
+                    f"Не удалось загрузить {relative_name}: HTTP {response.status}"
+                )
+            destination.write_bytes(await response.bytes())
+    else:
+        root = mo.notebook_location() / "public"
+
     csv_path = root / "data" / "photo_color_data.csv"
     photos_path = root / "data" / "cifar10_photos.zip"
     asset_dir = root / "assets"
@@ -673,22 +704,18 @@ def _(mo, flower):
 </div>
        </div>
 
-
-<div class="cl-footer-links">
-    <div>
-        Исходный анализ:
-        <a href="https://colab.research.google.com/drive/17_NhhSs_E5tIDFuaY3CTjjgJWv2oJ3hE?usp=sharing"
-           target="_blank"
-           rel="noopener noreferrer">Открыть Colab</a>
-    </div>
-</div>
-
-<div class="cl-footer-sources">
-    Источники: CIFAR-10, В. Е. Гмурман, Leemis и McQueston (2008), SciPy, NumPy, Matplotlib
-</div>
-
+       <div class="cl-footer">
+         <div><strong>COLOR LAB</strong><br>Исследование CIFAR-10, 2026</div>
+         <div class="cl-footer-links"><div>Исходный анализ: <a target="_blank" rel="noopener noreferrer" href="https://colab.research.google.com/drive/17_NhhSs_E5tIDFuaY3CTjjgJWv2oJ3hE?usp=sharing">Открыть Colab</a></div><div class="cl-note-link"></div></div>
+         <div class="cl-footer-sources">Источники: CIFAR-10, В. Е. Гмурман, Leemis и McQueston (2008), SciPy, NumPy, Matplotlib</div>
+       </div>
     </section>""")
     return
+
+
+if __name__ == "__main__":
+    app.run()
+
 
 
 if __name__ == "__main__":
