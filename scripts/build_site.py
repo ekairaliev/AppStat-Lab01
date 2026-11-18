@@ -23,7 +23,7 @@ SITE = ROOT / "site"
 COLOR = ROOT / "ktvd/ColorLab"
 EXPERIMENTS = COLOR / "interactive/experiments.py"
 MAIN_COLAB = "https://colab.research.google.com/github/ekairaliev/AppStat-Lab01/blob/main/AppStat_Lab01.ipynb"
-COLOR_COLAB = "https://colab.research.google.com/drive/1TIykhDkBmIEwg3NVIK4BqL7pTjnSKaP7?usp=sharing"
+COLOR_COLAB = "https://colab.research.google.com/github/ekairaliev/AppStat-Lab01/blob/main/ktvd/ColorLab/Photo%282%29.ipynb"
 
 SPRINT_1 = [
     ("Предисловие", "preface", "Предисловие"),
@@ -202,8 +202,8 @@ def color_body(cells, renderer, experiments):
                 chunks.append(experiments["photo"])
             if '<a id="colorlab-10"' in value:
                 chunks.append(experiments["color_generator"])
-            value = value.replace("https://kristina344.github.io/ColorLab/", "#experiments")
-            value = value.replace("[COLOR LAB - сайт](#experiments) | Выполнено и опубликовано", "[Интерактивы marimo](#experiments) | Выполнено")
+            value = value.replace("https://ekairaliev.github.io/AppStat-Lab01/#colorlab", "#experiments")
+            value = value.replace("[ColorLab на сайте лабораторной](#experiments) | Выполнено и опубликовано", "[Интерактивы marimo](#experiments) | Выполнено")
         rendered = renderer.render_cell(cell, "ColorLab", replacement=value)
         if after_criteria:
             preparation.append(rendered)
