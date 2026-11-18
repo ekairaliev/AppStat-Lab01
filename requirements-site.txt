@@ -1,0 +1,4 @@
+marimo==0.25.2
+beautifulsoup4>=4.13,<5
+playwright>=1.52,<2
+uv>=0.7,<1

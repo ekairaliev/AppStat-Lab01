@@ -1,3 +1,27 @@
-- [Сайт](https://ekairaliev.github.io/AppStat-Lab01/)
-- [GitHub](https://github.com/ekairaliev/AppStat-Lab01)
-- [Colab](https://colab.research.google.com/github/ekairaliev/AppStat-Lab01/blob/main/AppStat_Lab01.ipynb)
+# Лабораторная работа № 1 · Прикладная статистика
+
+[Открыть общую лабораторную](https://ekairaliev.github.io/AppStat-Lab01/)
+
+**Эмиль Кайралиев и Кристина Торхова · ИТМО**
+
+- **Спринт 1** — исследование температуры и задержки воспламенения, линейной скорости горения.
+- **Спринт 2** — математическое обоснование, реализация и проверки шести генераторов.
+- **КТвД · ColorLab** — яркость и насыщенность изображений CIFAR-10, отчёт и интерактивные эксперименты marimo на одной странице.
+
+В репозитории сохранены исходные материалы. Оба спринта находятся в `AppStat_Lab01.ipynb`, дополнительное исследование — в `ktvd/ColorLab/Photo(2).ipynb`. Исходные данные и код marimo лежат в `data/` и `ktvd/ColorLab/`.
+
+Эксперименты встроены в обе главы и ColorLab через marimo Islands. Отчёты и графики берутся из сохранённых результатов Colab. Интерактивный Python загружается по мере прокрутки до эксперимента.
+
+## Сборка сайта
+
+```sh
+python -m pip install -r requirements-site.txt
+python scripts/build_site.py
+python scripts/check_site.py --allow-cdn
+python -m http.server 8765 --directory dist
+```
+
+Предпросмотр открывается по адресу, указанному в терминале. При локальной сборке библиотеки marimo загружаются из Интернета. Для сайта на GitHub Pages выберите **GitHub Actions** в настройках источника публикации. Workflow публикует `dist/` из ветки `main`. Сборка включает библиотеки Python, данные и статические файлы, которые браузер загружает с того же сайта.
+
+Исследование использует CombustionData (P. Wang, H. Ke, Y. Xue, *Scientific Data*, 2026), CIFAR-10 и источники, приведённые в обоих ноутбуках.
+
